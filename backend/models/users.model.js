@@ -8,7 +8,7 @@ const userSchema = new Schema({
     required: true,
     unique: true,
     trim: true,
-    minlength: 5
+    minlength: 1
   },
   description: {
     type: String,
@@ -18,6 +18,6 @@ const userSchema = new Schema({
   }
 })
 
-const Users = mongoose.model('User', userSchema)
+const Users = mongoose.model('Users', userSchema)
 
 module.exports = Users
