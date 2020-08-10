@@ -1,11 +1,12 @@
 const express = require('express');
 const cors = require ('cors');
 const mongoose = require('mongoose');
+const Project = require('./models/projects.model')
 
 require ('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -15,11 +16,29 @@ mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedT
 
 const connection = mongoose.connection; 
 connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
+    console.log("DB connected");
 })
 
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
+
+app.get('/', async (req, res) => {
+    const projects = await Project.find()
+    res.json(projects) 
+})
+
+app.post('/add', async (req, res) => {
+    const title = req.body.title
+    const description = req.body.description
+
+    const newProject = new Project({
+        title,
+        description
+    })
+
+    await newProject.save()
+    res.json('Project added!')
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
