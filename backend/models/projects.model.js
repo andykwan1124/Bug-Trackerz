@@ -2,17 +2,16 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
+// When changing schema fields, might need to drop index on Atlas console
 const projectSchema = new Schema({
   title: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
-    minlength: 1
+    minlength: 1,
   },
   description: {
     type: String,
-    unique: true,
     trim: true,
     required: true
   }
