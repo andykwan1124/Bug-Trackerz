@@ -6,7 +6,7 @@ const Project = require('./models/projects.model')
 require ('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -21,24 +21,8 @@ connection.once('open', () => {
 
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
-
-app.get('/', async (req, res) => {
-    const projects = await Project.find()
-    res.json(projects) 
-})
-
-app.post('/add', async (req, res) => {
-    const title = req.body.title
-    const description = req.body.description
-
-    const newProject = new Project({
-        title,
-        description
-    })
-
-    await newProject.save()
-    res.json('Project added!')
-})
+const projectRouter = require('./routes/projects')
+app.use('/projects', projectRouter)
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
