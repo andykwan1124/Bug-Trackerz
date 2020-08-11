@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import useDeepCompareEffect from 'use-deep-compare-effect'
+import CustomModal from './CustomModal'
 
 const Project = ({ project }) => {
     return (
@@ -12,15 +13,19 @@ const Project = ({ project }) => {
 }
 const Home = () => {
     const [projectList, setPl] = useState([])
+    const [isModalOpen, setIsModalOpen] = useState(false)
     useEffect(() => {
         const getProjects = async () => {
             const res = await axios.get('http://localhost:5000/projects')
-            console.log(res.data)
             setPl(res.data)
         }
         
         getProjects()
     }, [])
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
 
     return (
         <>
@@ -38,6 +43,8 @@ const Home = () => {
                     ))}
                 </tbody>
             </table>
+            <CustomModal isModalOpen={isModalOpen} onClose={() => closeModal()}/>
+            <button onClick={() => setIsModalOpen(true)}>open</button>
         </>
     )
 }
