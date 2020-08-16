@@ -23,4 +23,9 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err))
 })
 
+router.route('/:issueId').get(async (req, res) => {
+  const issue = await Issue.find( { _id: req.params.issueId } )
+  res.json(issue)
+})
+
 module.exports = router
